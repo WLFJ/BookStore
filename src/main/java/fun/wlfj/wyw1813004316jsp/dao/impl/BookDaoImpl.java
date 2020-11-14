@@ -15,7 +15,7 @@ public class BookDaoImpl implements IBookDao {
 
 	public BookDaoImpl() {
 		wyw1813004316bkList.add(new Book(1, "Linux大学教程", "1.jpg", 128.0));
-		wyw1813004316bkList.add(new Book(2, "线性代数(第五版)", "2.webp", 108.0));
+		wyw1813004316bkList.add(new Book(2, "线性代数(第五版)", "2.png", 108.0));
 		wyw1813004316bkList.add(new Book(3, "Python 机器学习基础教程", "3.jpg", 62.4));
 		wyw1813004316bkList.add(new Book(4, "统计学习方法", "4.jpg", 66.7));
 		wyw1813004316bkList.add(new Book(5, "Python 数据科学手册", "5.jpg", 86.10));

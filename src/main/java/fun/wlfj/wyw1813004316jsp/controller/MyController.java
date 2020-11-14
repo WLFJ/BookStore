@@ -11,7 +11,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +51,30 @@ public class MyController {
 		map.put("wyw1813004316img", b.getImg());
 		map.put("wyw1813004316price", b.getPrice());
 		return map;
+	}
+	
+	@RequestMapping("/userLogin")
+	public ModelAndView userLogin() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("book/index");
+		return mv;
+	}
+	
+	@RequestMapping("/login")
+	public RedirectView login(String username, String password, HttpServletRequest request) {
+		if(username.equals("admin") && password.equals("123")) {
+			HttpSession session = request.getSession();
+			session.setAttribute("isLogined", true);
+			return new RedirectView("/book/add");
+		}else {
+			return new RedirectView("/book/userLogin");
+		}
+	}
+	
+	@RequestMapping("/logout")
+	public RedirectView logout(HttpServletRequest request) {
+		request.getSession().setAttribute("isLogined", null);
+		return new RedirectView("/book/details");
 	}
 	
 	@RequestMapping("/add")

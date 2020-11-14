@@ -1,4 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
+
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html lang="zh">
@@ -87,6 +89,15 @@
       <p>
         <a href="#" class="btn btn-primary my-2">联系我</a>
         <a href="./add" class="btn btn-secondary my-2">添加书籍</a>
+        <!-- 现在我们要看是否登陆了 -->
+        <%Object isLogined = session.getAttribute("isLogined");
+        if(isLogined != null && (Boolean) isLogined){
+        	
+        	%>
+        <a href="./logout" class="btn btn-warning my-2">退出登录</a>
+        <%
+        }
+        %>
       </p>
     </div>
   </section>
