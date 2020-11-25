@@ -33,7 +33,6 @@ import fun.wlfj.wyw1813004316jsp.service.IBookService;
 
 @Controller
 @RestController
-@RequestMapping("/book")
 public class MyController {
 	
 	@Autowired
@@ -41,9 +40,15 @@ public class MyController {
 	
 	private static final String IMG_PATH = "/Users/yves/spring_file_upload/";
 	
+	@RequestMapping("/")
+	public ModelAndView index(ModelAndView mv) {
+		mv.setViewName("redirect:details");
+		return mv;
+	}
+	
 	@RequestMapping("/detail")
 	@ResponseBody
-	public Map<String, Object> getBookById_JSON(int wyw1813004316id){
+	public Map<String, Object> getBookById_JSON(Integer wyw1813004316id){
 		Map<String, Object> map = new HashMap<String, Object>();
 		Book b = wyw1813004316bookService.getBookById(wyw1813004316id);
 		map.put("wyw1813004316id", b.getId());
@@ -56,7 +61,7 @@ public class MyController {
 	@RequestMapping("/userLogin")
 	public ModelAndView userLogin() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("book/index");
+		mv.setViewName("_login");
 		return mv;
 	}
 	
@@ -65,22 +70,22 @@ public class MyController {
 		if(username.equals("admin") && password.equals("123")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("isLogined", true);
-			return new RedirectView("/book/add");
+			return new RedirectView("add");
 		}else {
-			return new RedirectView("/book/userLogin");
+			return new RedirectView("userLogin");
 		}
 	}
 	
 	@RequestMapping("/logout")
 	public RedirectView logout(HttpServletRequest request) {
 		request.getSession().setAttribute("isLogined", null);
-		return new RedirectView("/book/details");
+		return new RedirectView("details");
 	}
 	
 	@RequestMapping("/add")
 	public ModelAndView showAddBook() {
 		ModelAndView wyw1813004316mv = new ModelAndView();
-		wyw1813004316mv.setViewName("book/addBook");
+		wyw1813004316mv.setViewName("addBook");
 		return wyw1813004316mv;
 	}
 	
@@ -94,14 +99,14 @@ public class MyController {
 		}
 		Book book = new Book(id, name, imgName, price);
 		wyw1813004316bookService.addBook(book);
-		return new RedirectView("/book/details");
+		return new RedirectView("details");
     }
 	
 	@RequestMapping("/details")
 	public ModelAndView getBooksDetail_JSP() {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("wyw1813004316books", wyw1813004316bookService.getBooks());
-		mv.setViewName("book/booksDetail");
+		mv.setViewName("booksDetail");
 		return mv;
 	}
 	

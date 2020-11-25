@@ -2,11 +2,11 @@ package fun.wlfj.wyw1813004316jsp.entity;
 
 public class Book {
 	// 我们应该在老师提供的基础上创新, 现在先这样写.
-	private int wyw1813004316id;
+	private Integer wyw1813004316id;
 	private String wyw1813004316name;
-	private double wyw1813004316price;
+	private Double wyw1813004316price;
 	private String wyw1813004316img;
-	public int getId() {
+	public Integer getId() {
 		return wyw1813004316id;
 	}
 	public void setId(int id) {
@@ -24,7 +24,7 @@ public class Book {
 	public void setImg(String img) {
 		this.wyw1813004316img = img;
 	}
-	public double getPrice() {
+	public Double getPrice() {
 		return wyw1813004316price;
 	}
 	public void setPrice(double price) {

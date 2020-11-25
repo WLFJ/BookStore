@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="fun.wlfj.wyw1813004316jsp.dao.IBookDao">
+	<select id="getBooks"
+		resultType="fun.wlfj.wyw1813004316jsp.entity.Book">
+		select id as wyw1813004316id, name as wyw1813004316name, price as wyw1813004316price, img as wyw1813004316img from bookstore;
+	</select>
+	<select id="getBookById"
+		parameterType="Integer"
+		resultType="fun.wlfj.wyw1813004316jsp.entity.Book">
+		select id as wyw1813004316id, name as wyw1813004316name, price as wyw1813004316price, img as wyw1813004316img 
+		from bookstore where wyw1813004316id=#{wyw1813004316id}
+	</select>
+	<insert id="addBook" 
+		parameterType="fun.wlfj.wyw1813004316jsp.entity.Book"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into bookstore(id, name, price, img) values(#{wyw1813004316id},#{wyw1813004316name}, #{wyw1813004316price}, #{wyw1813004316img})
+	</insert>
+</mapper>

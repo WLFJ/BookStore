@@ -15,7 +15,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 		if(isLogined != null && (Boolean)isLogined) {
 			return true;
 		}else {
-			response.sendRedirect("/book/userLogin");
+			response.sendRedirect("userLogin");
 			return false;
 		}
 	}	
