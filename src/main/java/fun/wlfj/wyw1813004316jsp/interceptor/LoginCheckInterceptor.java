@@ -15,7 +15,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 		if(isLogined != null && (Boolean)isLogined) {
 			return true;
 		}else {
-			response.sendRedirect("userLogin");
+			// 这里要将来源的站点传入其中
+			String originURL = request.getRequestURL().toString();
+			String jumpNeeded = originURL.substring(originURL.indexOf("/", 8));
+			// 现在我们要得到第三个斜杠后面的所有东西
+			response.sendRedirect("login?from=" + jumpNeeded);
 			return false;
 		}
 	}	

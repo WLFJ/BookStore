@@ -28,4 +28,20 @@ public class BookServiceImpl implements IBookService {
 		wyw1813004316bookDao.addBook(wyw1813004316book);
 	}
 
+	@Override
+	public void deleteBook(int id) {
+		wyw1813004316bookDao.deleteBook(id);
+		
+	}
+
+	@Override
+	public void updateBook(Book book) {
+		wyw1813004316bookDao.updateBook(book);
+	}
+
+	@Override
+	public Book[] getBookByKeyword(String keyword) {
+		return wyw1813004316bookDao.getBookByKeyword(keyword);
+	}
+
 }

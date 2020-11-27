@@ -1,44 +1,71 @@
 package fun.wlfj.wyw1813004316jsp.entity;
 
+import java.util.Date;
+
 public class Book {
-	// 我们应该在老师提供的基础上创新, 现在先这样写.
-	private Integer wyw1813004316id;
-	private String wyw1813004316name;
-	private Double wyw1813004316price;
-	private String wyw1813004316img;
+	private Integer id;
+	private String name;
+	private Double price;
+	private String img;
+	private String detail;
+	private Date date;
+
 	public Integer getId() {
-		return wyw1813004316id;
+		return id;
 	}
 	public void setId(int id) {
-		this.wyw1813004316id = id;
+		this.id = id;
 	}
 	public String getName() {
-		return wyw1813004316name;
+		return name;
 	}
 	public void setName(String name) {
-		this.wyw1813004316name = name;
+		this.name = name;
 	}
 	public String getImg() {
-		return wyw1813004316img;
+		return img;
 	}
 	public void setImg(String img) {
-		this.wyw1813004316img = img;
+		this.img = img;
 	}
 	public Double getPrice() {
-		return wyw1813004316price;
+		return price;
 	}
 	public void setPrice(double price) {
-		this.wyw1813004316price = price;
+		this.price = price;
 	}
-	public Book(int id, String name, String img, double price) {
+
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public String getDetail() {
+		return detail;
+	}
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+	public Book(int id, String name, String img, double price, String detail, Date date) {
 		super();
-		this.wyw1813004316id = id;
-		this.wyw1813004316name = name;
-		this.wyw1813004316img = img;
-		this.wyw1813004316price = price;
+		this.id = id;
+		this.name = name;
+		this.img = img;
+		this.price = price;
+		this.date = date;
+		this.detail = detail;
 	}
-	public Book(String id, String name, String img, double price) {
-		this(Integer.parseInt(id), name, img, price);
+	public Book(String id, String name, String img, double price, Date date, String detail) {
+		this(Integer.parseInt(id), name, img, price, detail, date);
+	}
+	public Book(int id, String name, String img, double price, String detail) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.img = img;
+		this.price = price;
+		this.detail = detail;
 	}
 	
 }

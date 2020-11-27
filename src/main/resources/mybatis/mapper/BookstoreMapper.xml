@@ -5,17 +5,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-ma
 	namespace="fun.wlfj.wyw1813004316jsp.dao.IBookDao">
 	<select id="getBooks"
 		resultType="fun.wlfj.wyw1813004316jsp.entity.Book">
-		select id as wyw1813004316id, name as wyw1813004316name, price as wyw1813004316price, img as wyw1813004316img from bookstore;
+		select id, name, price, img, detail, date
+		from bookstore;
 	</select>
 	<select id="getBookById"
-		parameterType="Integer"
 		resultType="fun.wlfj.wyw1813004316jsp.entity.Book">
-		select id as wyw1813004316id, name as wyw1813004316name, price as wyw1813004316price, img as wyw1813004316img 
-		from bookstore where wyw1813004316id=#{wyw1813004316id}
+		select id, name, price, img, detail, date
+		from bookstore 
+		where id=#{id};
 	</select>
+	<!-- useGeneratedKeys="true" keyProperty="id"-->
+	<!-- 使用这个技术我们可以得到数据库自动提供的数值 -->
+	<!-- 这里可以直接解包对象，我们不用book.id这样的形式 -->
 	<insert id="addBook" 
-		parameterType="fun.wlfj.wyw1813004316jsp.entity.Book"
-		useGeneratedKeys="true" keyProperty="id">
-		insert into bookstore(id, name, price, img) values(#{wyw1813004316id},#{wyw1813004316name}, #{wyw1813004316price}, #{wyw1813004316img})
+		parameterType="fun.wlfj.wyw1813004316jsp.entity.Book" >
+		insert into bookstore(id, name, price, img, detail) 
+		values(#{id}, #{name}, #{price}, #{img}, #{detail});
 	</insert>
+	<delete id="deleteBook">
+		delete from bookstore where id=#{id};
+	</delete>
+	<update id="updateBook"
+		parameterType="fun.wlfj.wyw1813004316jsp.entity.Book" >
+		update bookstore set 
+		name=#{name}, 
+		price=#{price}, 
+		img=#{img}, 
+		detail=#{detail}, 
+		date=current_timestamp 
+		where id=#{id};
+	</update>
+	<select id="getBookByKeyword"
+		resultType="fun.wlfj.wyw1813004316jsp.entity.Book">
+		select id, name, price, img, detail, date
+		from bookstore 
+		where name like concat("%", #{keyword}, "%") or detail like concat("%", #{keyword}, "%");
+	</select>
 </mapper>

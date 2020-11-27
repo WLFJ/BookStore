@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +40,15 @@ public class MyController {
 	@Autowired
 	private IBookService wyw1813004316bookService;
 	
-	private static final String IMG_PATH = "/Users/yves/spring_file_upload/";
+	@Value("${yves.upload.path}")
+	private String IMG_PATH;
 	
+	@Value("${yves.username}")
+	private String username;
+	
+	@Value("${yves.password}")
+	private String password;
+
 	@RequestMapping("/")
 	public ModelAndView index(ModelAndView mv) {
 		mv.setViewName("redirect:details");
@@ -48,31 +57,37 @@ public class MyController {
 	
 	@RequestMapping("/detail")
 	@ResponseBody
-	public Map<String, Object> getBookById_JSON(Integer wyw1813004316id){
-		Map<String, Object> map = new HashMap<String, Object>();
-		Book b = wyw1813004316bookService.getBookById(wyw1813004316id);
-		map.put("wyw1813004316id", b.getId());
-		map.put("wyw1813004316name", b.getName());
-		map.put("wyw1813004316img", b.getImg());
-		map.put("wyw1813004316price", b.getPrice());
-		return map;
-	}
-	
-	@RequestMapping("/userLogin")
-	public ModelAndView userLogin() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("_login");
+	public ModelAndView showBookDetail(Integer wyw1813004316id, ModelAndView mv){
+		Book book = wyw1813004316bookService.getBookById(wyw1813004316id);
+		mv.addObject("book", book);
+		mv.setViewName("detail");
 		return mv;
 	}
 	
-	@RequestMapping("/login")
-	public RedirectView login(String username, String password, HttpServletRequest request) {
-		if(username.equals("admin") && password.equals("123")) {
+	@RequestMapping("/delete")
+	public ModelAndView deleteBook(@RequestParam("wyw1813004316id") Integer id, ModelAndView mv) {
+		wyw1813004316bookService.deleteBook(id);
+		mv.setViewName("redirect:/");
+		return mv;
+	}
+	
+	@GetMapping("/login")
+	public ModelAndView userLogin(@RequestParam(defaultValue="/") String from) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("from", from);
+		mv.setViewName("login");
+		return mv;
+	}
+	
+	@PostMapping("/login")
+	public RedirectView login(String username, String password, @RequestParam(defaultValue="/") String from, HttpServletRequest request) {
+		if(username.equals(this.username) && password.equals(this.password)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("isLogined", true);
-			return new RedirectView("add");
+			// 我们要支持跳转，这就需要参数支持了
+			return new RedirectView(from);
 		}else {
-			return new RedirectView("userLogin");
+			return new RedirectView("login");
 		}
 	}
 	
@@ -90,14 +105,14 @@ public class MyController {
 	}
 	
 	@PostMapping("/insert")
-    public RedirectView insertBook_POST(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("img") MultipartFile imgFile){
+    public RedirectView insertBook_POST(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("img") MultipartFile imgFile, String detail){
 		String imgName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
 		try {
 			FileCopyUtils.copy(imgFile.getInputStream(), new FileOutputStream(IMG_PATH + imgName));
 		} catch (Exception e) {
 
 		}
-		Book book = new Book(id, name, imgName, price);
+		Book book = new Book(id, name, imgName, price, detail);
 		wyw1813004316bookService.addBook(book);
 		return new RedirectView("details");
     }
@@ -110,11 +125,54 @@ public class MyController {
 		return mv;
 	}
 	
+	@RequestMapping("/detail/json")
+	public Object getDetailsByJson(Integer id) {
+		Map<String, String> map = new HashMap<>();
+		Book book = wyw1813004316bookService.getBookById(id);
+		map.put("detail", book.getDetail());
+		return map;
+	}
+	
 	@RequestMapping("/showImg/{fileName}")
 	public void showImg(@PathVariable("fileName") String fileName, HttpServletResponse response) {
 		response.setHeader("Content-Disposition", "attachment;fileName=" + "awsome");
 		File imgFile = new File(IMG_PATH + fileName);
         responseFile(response, imgFile);	
+	}
+	
+	@GetMapping("/modify")
+	public ModelAndView showUpdate(@RequestParam("wyw1813004316id") Integer id, ModelAndView mv) {
+		Book book = wyw1813004316bookService.getBookById(id);
+		mv.addObject("book", book);
+		mv.setViewName("updateBook");
+		return mv;
+	}
+	
+	@RequestMapping("/search")
+	public ModelAndView search(String keyword, ModelAndView mv) {
+		mv.setViewName("booksDetail");
+		mv.addObject("wyw1813004316books", wyw1813004316bookService.getBookByKeyword(keyword));
+		return mv;
+	}
+
+	@PostMapping("/modify")
+	public ModelAndView updateBook(Integer id, String name, Double price, @RequestParam("img") MultipartFile imgFile, String detail, ModelAndView mv) {
+		Book book = wyw1813004316bookService.getBookById(id);
+		book.setName(name);
+		book.setPrice(price);
+		book.setDetail(detail);
+		if(!imgFile.isEmpty()) {
+			String imgName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+			try {
+				FileCopyUtils.copy(imgFile.getInputStream(), new FileOutputStream(IMG_PATH + imgName));
+			} catch (Exception e) {
+
+			}
+			book.setImg(imgName);
+		}
+		wyw1813004316bookService.updateBook(book);
+		mv.setViewName("redirect:/");
+		return mv;
 	}
 	
 	/**

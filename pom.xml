@@ -11,7 +11,7 @@
 	</parent>
 	<artifactId>helloMVC</artifactId>
 	<groupId>fun.wlfj</groupId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>Spring Boot Web JSP Sample</name>
 	<description>Spring Boot Web JSP Sample</description>
 	<version>0.0.1-SNAPSHOT</version>
@@ -50,10 +50,12 @@
 			<groupId>org.springframework.boot</groupId> 
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		<dependency>
-		   <groupId>org.xerial</groupId>
-		   <artifactId>sqlite-jdbc</artifactId>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+</dependency>
+		
 		 <dependency>
 			 <groupId>org.mybatis.spring.boot</groupId>
 			 <artifactId>mybatis-spring-boot-starter</artifactId>

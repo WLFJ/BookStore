@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -44,7 +44,10 @@
     <link href="floating-labels.css" rel="stylesheet">
   </head>
   <body>
-<form class="form-signin" action="login" method="POST">
+<!-- 
+我们要在表单上添加跳转请求
+ -->
+<form class="form-signin" action="login" th:attrappend="action=${from} ? ${'?from=' + from}: ''" method="POST">
   <div class="text-center mb-4">
     <img class="mb-4" src="/docs/assets/brand/ss_blue_logo.jpg" alt="" width="120" height="120">
     <h1 class="h3 mb-3 font-weight-normal">图书馆用户登陆</h1>
