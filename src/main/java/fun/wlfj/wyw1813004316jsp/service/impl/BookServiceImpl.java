@@ -14,7 +14,7 @@ public class BookServiceImpl implements IBookService {
 	private IBookDao wyw1813004316bookDao;
 	
 	@Override
-	public Book getBookById(int wyw1813004316id) {
+	public Book getBookById(long wyw1813004316id) {
 		return wyw1813004316bookDao.getBookById(wyw1813004316id);
 	}
 
@@ -29,7 +29,7 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public void deleteBook(int id) {
+	public void deleteBook(long id) {
 		wyw1813004316bookDao.deleteBook(id);
 		
 	}

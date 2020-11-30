@@ -3,17 +3,17 @@ package fun.wlfj.wyw1813004316jsp.entity;
 import java.util.Date;
 
 public class Book {
-	private Integer id;
+	private Long id;
 	private String name;
 	private Double price;
 	private String img;
 	private String detail;
 	private Date date;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -47,7 +47,7 @@ public class Book {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	public Book(int id, String name, String img, double price, String detail, Date date) {
+	public Book(long id, String name, double price, String img, String detail, Date date) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -56,10 +56,10 @@ public class Book {
 		this.date = date;
 		this.detail = detail;
 	}
-	public Book(String id, String name, String img, double price, Date date, String detail) {
-		this(Integer.parseInt(id), name, img, price, detail, date);
+	public Book(String id, String name, String img, double price, String detail, Date date) {
+		this(Long.parseLong(id), name, price, img, detail, date);
 	}
-	public Book(int id, String name, String img, double price, String detail) {
+	public Book(long id, String name, String img, double price, String detail) {
 		super();
 		this.id = id;
 		this.name = name;

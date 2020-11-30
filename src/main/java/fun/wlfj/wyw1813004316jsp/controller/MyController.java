@@ -57,7 +57,7 @@ public class MyController {
 	
 	@RequestMapping("/detail")
 	@ResponseBody
-	public ModelAndView showBookDetail(Integer wyw1813004316id, ModelAndView mv){
+	public ModelAndView showBookDetail(Long wyw1813004316id, ModelAndView mv){
 		Book book = wyw1813004316bookService.getBookById(wyw1813004316id);
 		mv.addObject("book", book);
 		mv.setViewName("detail");
@@ -65,7 +65,7 @@ public class MyController {
 	}
 	
 	@RequestMapping("/delete")
-	public ModelAndView deleteBook(@RequestParam("wyw1813004316id") Integer id, ModelAndView mv) {
+	public ModelAndView deleteBook(@RequestParam("wyw1813004316id") Long id, ModelAndView mv) {
 		wyw1813004316bookService.deleteBook(id);
 		mv.setViewName("redirect:/");
 		return mv;
@@ -105,7 +105,7 @@ public class MyController {
 	}
 	
 	@PostMapping("/insert")
-    public RedirectView insertBook_POST(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("img") MultipartFile imgFile, String detail){
+    public RedirectView insertBook_POST(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("img") MultipartFile imgFile, String detail){
 		String imgName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
 		try {
 			FileCopyUtils.copy(imgFile.getInputStream(), new FileOutputStream(IMG_PATH + imgName));
@@ -126,7 +126,7 @@ public class MyController {
 	}
 	
 	@RequestMapping("/detail/json")
-	public Object getDetailsByJson(Integer id) {
+	public Object getDetailsByJson(Long id) {
 		Map<String, String> map = new HashMap<>();
 		Book book = wyw1813004316bookService.getBookById(id);
 		map.put("detail", book.getDetail());
@@ -141,7 +141,7 @@ public class MyController {
 	}
 	
 	@GetMapping("/modify")
-	public ModelAndView showUpdate(@RequestParam("wyw1813004316id") Integer id, ModelAndView mv) {
+	public ModelAndView showUpdate(@RequestParam("wyw1813004316id") Long id, ModelAndView mv) {
 		Book book = wyw1813004316bookService.getBookById(id);
 		mv.addObject("book", book);
 		mv.setViewName("updateBook");
@@ -156,7 +156,7 @@ public class MyController {
 	}
 
 	@PostMapping("/modify")
-	public ModelAndView updateBook(Integer id, String name, Double price, @RequestParam("img") MultipartFile imgFile, String detail, ModelAndView mv) {
+	public ModelAndView updateBook(Long id, String name, Double price, @RequestParam("img") MultipartFile imgFile, String detail, ModelAndView mv) {
 		Book book = wyw1813004316bookService.getBookById(id);
 		book.setName(name);
 		book.setPrice(price);
