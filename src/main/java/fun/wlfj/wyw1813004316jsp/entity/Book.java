@@ -9,6 +9,10 @@ public class Book {
 	private String img;
 	private String detail;
 	private Date date;
+	
+	public boolean isValid() {
+		return id != null && name != null && date != null;
+	}
 
 	public Long getId() {
 		return id;
@@ -48,7 +52,6 @@ public class Book {
 		this.detail = detail;
 	}
 	public Book(long id, String name, double price, String img, String detail, Date date) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.img = img;
@@ -56,11 +59,14 @@ public class Book {
 		this.date = date;
 		this.detail = detail;
 	}
-	public Book(String id, String name, String img, double price, String detail, Date date) {
-		this(Long.parseLong(id), name, price, img, detail, date);
+	public Book(long id, String name, double price, String detail, Date date) {
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.date = date;
+		this.detail = detail;
 	}
 	public Book(long id, String name, String img, double price, String detail) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.img = img;

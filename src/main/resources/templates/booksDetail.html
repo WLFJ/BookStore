@@ -86,7 +86,7 @@
       <div class="row">
         <div class="col-md-4" th:each="book : ${wyw1813004316books }">
           <div class="card mb-4 shadow-sm">
-            <img class="card-img-top" width="100%" height="400" role="img" th:src="'./showImg/' + ${book.getImg() }"/>
+            <img class="card-img-top" width="100%" height="400" role="img" th:src="${book.getImg()}? './showImg/' + ${book.getImg()} : './img/default.png' "/>
             <div class="card-body">
               <p class="card-text">
 				  <strong th:text="${book.getName() }">Linux大学教程</strong>

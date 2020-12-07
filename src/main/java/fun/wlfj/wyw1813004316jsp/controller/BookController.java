@@ -11,9 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,19 +33,13 @@ import fun.wlfj.wyw1813004316jsp.service.IBookService;
 
 @Controller
 @RestController
-public class MyController {
+public class BookController {
 	
 	@Autowired
 	private IBookService wyw1813004316bookService;
 	
 	@Value("${yves.upload.path}")
 	private String IMG_PATH;
-	
-	@Value("${yves.username}")
-	private String username;
-	
-	@Value("${yves.password}")
-	private String password;
 
 	@RequestMapping("/")
 	public ModelAndView index(ModelAndView mv) {
@@ -57,7 +49,7 @@ public class MyController {
 	
 	@RequestMapping("/detail")
 	@ResponseBody
-	public ModelAndView showBookDetail(Long wyw1813004316id, ModelAndView mv){
+	public ModelAndView showBookDetail(Long wyw1813004316id, ModelAndView mv) throws Exception{
 		Book book = wyw1813004316bookService.getBookById(wyw1813004316id);
 		mv.addObject("book", book);
 		mv.setViewName("detail");
@@ -71,32 +63,6 @@ public class MyController {
 		return mv;
 	}
 	
-	@GetMapping("/login")
-	public ModelAndView userLogin(@RequestParam(defaultValue="/") String from) {
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("from", from);
-		mv.setViewName("login");
-		return mv;
-	}
-	
-	@PostMapping("/login")
-	public RedirectView login(String username, String password, @RequestParam(defaultValue="/") String from, HttpServletRequest request) {
-		if(username.equals(this.username) && password.equals(this.password)) {
-			HttpSession session = request.getSession();
-			session.setAttribute("isLogined", true);
-			// 我们要支持跳转，这就需要参数支持了
-			return new RedirectView(from);
-		}else {
-			return new RedirectView("login");
-		}
-	}
-	
-	@RequestMapping("/logout")
-	public RedirectView logout(HttpServletRequest request) {
-		request.getSession().setAttribute("isLogined", null);
-		return new RedirectView("details");
-	}
-	
 	@RequestMapping("/add")
 	public ModelAndView showAddBook() {
 		ModelAndView wyw1813004316mv = new ModelAndView();
@@ -106,11 +72,14 @@ public class MyController {
 	
 	@PostMapping("/insert")
     public RedirectView insertBook_POST(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam("price") double price, @RequestParam("img") MultipartFile imgFile, String detail){
-		String imgName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
-		try {
-			FileCopyUtils.copy(imgFile.getInputStream(), new FileOutputStream(IMG_PATH + imgName));
-		} catch (Exception e) {
+		String imgName = null;
+		if(!imgFile.isEmpty()) {
+			imgName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+			try {
+				FileCopyUtils.copy(imgFile.getInputStream(), new FileOutputStream(IMG_PATH + imgName));
+			} catch (Exception e) {
 
+			}
 		}
 		Book book = new Book(id, name, imgName, price, detail);
 		wyw1813004316bookService.addBook(book);
@@ -118,7 +87,7 @@ public class MyController {
     }
 	
 	@RequestMapping("/details")
-	public ModelAndView getBooksDetail_JSP() {
+	public ModelAndView getBooksDetail_JSP() throws Exception {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("wyw1813004316books", wyw1813004316bookService.getBooks());
 		mv.setViewName("booksDetail");
@@ -126,7 +95,7 @@ public class MyController {
 	}
 	
 	@RequestMapping("/detail/json")
-	public Object getDetailsByJson(Long id) {
+	public Object getDetailsByJson(Long id) throws Exception {
 		Map<String, String> map = new HashMap<>();
 		Book book = wyw1813004316bookService.getBookById(id);
 		map.put("detail", book.getDetail());
@@ -141,7 +110,7 @@ public class MyController {
 	}
 	
 	@GetMapping("/modify")
-	public ModelAndView showUpdate(@RequestParam("wyw1813004316id") Long id, ModelAndView mv) {
+	public ModelAndView showUpdate(@RequestParam("wyw1813004316id") Long id, ModelAndView mv) throws Exception {
 		Book book = wyw1813004316bookService.getBookById(id);
 		mv.addObject("book", book);
 		mv.setViewName("updateBook");
@@ -149,14 +118,14 @@ public class MyController {
 	}
 	
 	@RequestMapping("/search")
-	public ModelAndView search(String keyword, ModelAndView mv) {
+	public ModelAndView search(String keyword, ModelAndView mv) throws Exception {
 		mv.setViewName("booksDetail");
 		mv.addObject("wyw1813004316books", wyw1813004316bookService.getBookByKeyword(keyword));
 		return mv;
 	}
 
 	@PostMapping("/modify")
-	public ModelAndView updateBook(Long id, String name, Double price, @RequestParam("img") MultipartFile imgFile, String detail, ModelAndView mv) {
+	public ModelAndView updateBook(Long id, String name, Double price, @RequestParam("img") MultipartFile imgFile, String detail, ModelAndView mv) throws Exception{
 		Book book = wyw1813004316bookService.getBookById(id);
 		book.setName(name);
 		book.setPrice(price);

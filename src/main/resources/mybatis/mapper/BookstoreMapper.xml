@@ -3,30 +3,64 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="fun.wlfj.wyw1813004316jsp.dao.IBookDao">
+	<!-- 手动指定映射关系 -->
+	<resultMap id="bookMap" type="Book">
+	<!-- 
+		private Long id;
+		private String name;
+		private Double price;
+		private String img;
+		private String detail;
+		private Date date;
+	 -->
+	 <!-- 注意主键和其他字段不同 -->
+		<id property="id" column="id"></id>
+		<result property="name" column="name"></result>
+		<result property="price" column="price"></result>
+		<result property="img" column="img"></result>
+		<result property="detail" column="detail"></result>
+		<result property="date" column="date"></result>
+	</resultMap>
+	<!-- 解决sql语句冗余的问题 -->
+	<sql id="book_columns">
+		id, name, price, img, detail, date
+	</sql>
+	<sql id="destination">
+		from bookstore
+	</sql>
+	<!-- 传入id列表，生成(1, 2, 3)这样的语句 -->
+	<sql id="queryById">
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item}	
+		</foreach>
+	</sql>
 	<select id="getBooks"
-		resultType="fun.wlfj.wyw1813004316jsp.entity.Book">
-		select id, name, price, img, detail, date
-		from bookstore;
+		resultMap="bookMap">
+		select <include refid="book_columns"/>
+		<include refid="destination"/>
+		;
 	</select>
 	<select id="getBookById"
-		resultType="fun.wlfj.wyw1813004316jsp.entity.Book">
-		select id, name, price, img, detail, date
-		from bookstore 
+		resultMap="bookMap">
+		select <include refid="book_columns"/>
+		<include refid="destination"/>
 		where id=#{id};
 	</select>
 	<!-- useGeneratedKeys="true" keyProperty="id"-->
 	<!-- 使用这个技术我们可以得到数据库自动提供的数值 -->
 	<!-- 这里可以直接解包对象，我们不用book.id这样的形式 -->
 	<insert id="addBook" 
-		parameterType="fun.wlfj.wyw1813004316jsp.entity.Book" >
+		parameterType="Book" >
 		insert into bookstore(id, name, price, img, detail) 
 		values(#{id}, #{name}, #{price}, #{img}, #{detail});
 	</insert>
 	<delete id="deleteBook">
-		delete from bookstore where id=#{id};
+		delete 
+		<include refid="destination"/>
+		where id=#{id};
 	</delete>
 	<update id="updateBook"
-		parameterType="fun.wlfj.wyw1813004316jsp.entity.Book" >
+		parameterType="Book" >
 		update bookstore set 
 		name=#{name}, 
 		price=#{price}, 
@@ -36,9 +70,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-ma
 		where id=#{id};
 	</update>
 	<select id="getBookByKeyword"
-		resultType="fun.wlfj.wyw1813004316jsp.entity.Book">
-		select id, name, price, img, detail, date
-		from bookstore 
+		resultMap="bookMap">
+		select <include refid="book_columns"/>
+		<include refid="destination"/>
 		where name like concat("%", #{keyword}, "%") or detail like concat("%", #{keyword}, "%");
 	</select>
+	<!-- 通过条件动态拼接 -->
+	<!-- 事实上我们有很多sql元素，可以降低程序的复杂度 -->
+	<!--
+	<select id=""
+		resultMap="bookMap">
+		select <include refid="book_columns"/>
+		<include refid="destination"/>
+		where 1=1
+		<if test="userName!=Null ans userName!=''">
+			and user_name like concat('%', #{username}, '%')
+		</if>	
+		可以在下面拼接多个条件
+	</select>  
+	-->
 </mapper>

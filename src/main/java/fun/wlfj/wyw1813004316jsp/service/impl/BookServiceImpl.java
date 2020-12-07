@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import fun.wlfj.wyw1813004316jsp.dao.IBookDao;
 import fun.wlfj.wyw1813004316jsp.entity.Book;
+import fun.wlfj.wyw1813004316jsp.exception.BookNotFoundError;
 import fun.wlfj.wyw1813004316jsp.service.IBookService;
 
 @Service
@@ -14,13 +15,18 @@ public class BookServiceImpl implements IBookService {
 	private IBookDao wyw1813004316bookDao;
 	
 	@Override
-	public Book getBookById(long wyw1813004316id) {
-		return wyw1813004316bookDao.getBookById(wyw1813004316id);
+	public Book getBookById(long wyw1813004316id) throws Exception {
+		Book book = wyw1813004316bookDao.getBookById(wyw1813004316id);
+		if(book == null)
+			throw new BookNotFoundError();
+		else
+			return book;
 	}
 
 	@Override
-	public Book[] getBooks() {
-		return wyw1813004316bookDao.getBooks();
+	public Book[] getBooks() throws Exception {
+		Book[] books = wyw1813004316bookDao.getBooks();
+		return books;
 	}
 
 	@Override
@@ -40,8 +46,9 @@ public class BookServiceImpl implements IBookService {
 	}
 
 	@Override
-	public Book[] getBookByKeyword(String keyword) {
-		return wyw1813004316bookDao.getBookByKeyword(keyword);
+	public Book[] getBookByKeyword(String keyword){
+		Book[] books = wyw1813004316bookDao.getBookByKeyword(keyword);
+		return books;
 	}
 
 }

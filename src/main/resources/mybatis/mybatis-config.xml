@@ -5,4 +5,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 <settings>
 <setting name="mapUnderscoreToCamelCase" value="true" />
 </settings> -->
+<typeAliases>
+	<!-- 如何设置别名？从而简化mapper中的对象名称 -->
+	<package name="fun.wlfj.wyw1813004316jsp.entity"/>
+	<!-- 用于简化单个类的名称 -->
+	<!--
+	<typeAlias name="" alias=""></typeAlias>  -->
+</typeAliases>
 </configuration>
